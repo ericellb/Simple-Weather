@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
-import TodayInfo from './TodayInfo';
+import TodayInfo, { TodayInfoProps } from './TodayInfo';
 import DataGraph, { GraphProps } from './DataGraph';
 
 const useStyles = makeStyles(theme => ({
@@ -27,8 +27,18 @@ const useStyles = makeStyles(theme => ({
 
 export default function TodayForecast() {
   const classes = useStyles({});
+  const today = new Date();
+  const tempTodayInfoProps: TodayInfoProps = {
+    data: {
+      temp: 26,
+      city: 'Montreal, Quebec',
+      feelsLike: 28,
+      sunTime: 'Sunset : 20:18'
+    }
+  };
+
   const tempGraphProps: GraphProps = {
-    type: 'uv',
+    type: 'rain',
     data: [
       { title: '12PM', value: 50 },
       { title: '2PM', value: 60 },
@@ -42,7 +52,7 @@ export default function TodayForecast() {
   return (
     <div className={classes.todayContainer}>
       <div className={classes.todayInfo}>
-        <TodayInfo />
+        <TodayInfo data={tempTodayInfoProps.data} />
       </div>
       <div className={classes.graph}>
         <DataGraph type={tempGraphProps.type} data={tempGraphProps.data} />

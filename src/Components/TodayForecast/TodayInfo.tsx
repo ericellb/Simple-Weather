@@ -1,6 +1,7 @@
 import React from 'react';
 import { Cloud, InputOutlined } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core';
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   todayDate: {
@@ -64,27 +65,38 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function TodayInfo() {
+export interface TodayInfoProps {
+  data: {
+    temp: number;
+    city: string;
+    feelsLike: number;
+    sunTime: string;
+  };
+}
+
+export default function TodayInfo(props: TodayInfoProps) {
   const classes = useStyles({});
+  let todayDate = moment(new Date()).format('ddd, MMM do');
+
   return (
     <React.Fragment>
       <div className={classes.todayDate}>
         <Cloud />
         <div className={classes.todayDateInfo}>
           <div className={classes.todayDateToday}>Today</div>
-          <div className={classes.todayDateDate}> Fri, Oct 3rd</div>
+          <div className={classes.todayDateDate}>{todayDate}</div>
         </div>
       </div>
       <div className={classes.todayTemp}>
-        28
+        {props.data.temp}
         <div className={classes.todayTempDeg}>°C</div>
       </div>
       <div className={classes.todayCity}>
-        Montreal, Canada <InputOutlined className={classes.todayCityIcon} />
+        {props.data.city} <InputOutlined className={classes.todayCityIcon} />
       </div>
       <div className={classes.todayExtra}>
-        <div className={classes.extraFeels}>Feels Like 32</div> •{' '}
-        <div className={classes.extraSunset}>Sunset 20:15</div>
+        <div className={classes.extraFeels}>Feels Like {props.data.feelsLike}</div> •{' '}
+        <div className={classes.extraSunset}>{props.data.sunTime}</div>
       </div>
     </React.Fragment>
   );

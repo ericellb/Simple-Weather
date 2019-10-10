@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
-import { string, number } from 'prop-types';
 
 const useStyles = makeStyles(theme => ({
   graphContainer: {
@@ -77,7 +76,7 @@ export default function DataGraph(props: GraphProps) {
   const classes = useStyles({});
   // Titles default to rain type
   let yTitles = ['showers', 'rain', 'drizzle'];
-  let graphTitle = 'Chance of rain';
+  let graphTitle = 'Precipitation';
 
   // Create titles bases on type
   if (props.type === 'uv') {
@@ -99,9 +98,7 @@ export default function DataGraph(props: GraphProps) {
             <div className={classes.graphItems}>
               <div className={classes.graphDottedLine}></div>
               <div className={classes.graphValueContainer}>
-                <div className={classes.graphValueLine} style={{ height: `${item.value}%` }}>
-                  {' '}
-                </div>
+                <div className={classes.graphValueLine} style={{ height: `${item.value}%` }} />
               </div>
               {item.title}
             </div>
