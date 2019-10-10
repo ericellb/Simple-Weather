@@ -1,27 +1,31 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
+import { string, number } from 'prop-types';
 
 const useStyles = makeStyles(theme => ({
-  chanceRainGraph: {
+  graphContainer: {
     display: 'flex',
     height: 'calc(100% - 19px)',
     fontSize: '12px'
   },
-  chanceRainTitles: {
+  graphTitles: {
     display: 'flex',
     flexBasis: '10%',
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap'
   },
-  chanceRainItems: {
+  graphTitleItem: {
+    flexBasis: '100%'
+  },
+  graphItems: {
     flexBasis: '15%',
     display: 'flex',
     alignItems: 'flex-end',
     justifyContent: 'center',
     position: 'relative'
   },
-  chanceRainLineContainer: {
+  graphLineContainer: {
     width: '4px',
     height: '100%',
     position: 'absolute',
@@ -29,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     paddingTop: '3em',
     paddingBottom: '2em'
   },
-  chanceRainDottedLine: {
+  graphDottedLine: {
     width: '4px',
     height: '100%',
     position: 'absolute',
@@ -42,7 +46,7 @@ const useStyles = makeStyles(theme => ({
     backgroundRepeat: 'repeat-y',
     backgroundClip: 'content-box'
   },
-  chanceRainValueContainer: {
+  graphValueContainer: {
     width: '12px',
     height: '100%',
     position: 'absolute',
@@ -53,7 +57,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'flex-end'
   },
-  chanceRainValueLine: {
+  graphValueLine: {
     background: '#302e62',
     height: '50%',
     borderRadius: '12px',
@@ -64,27 +68,33 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function RainGraph() {
+export interface GraphProps {
+  type: 'rain' | 'uv';
+  data: { title: string; value: number }[];
+}
+
+export default function DataGraph(props: GraphProps) {
   const classes = useStyles({});
-  let testArr = ['10AM', '12PM', '2PM', '4PM', '6PM', '8PM'];
 
   return (
     <React.Fragment>
       <div>Chance of rain</div>
-      <div className={classes.chanceRainGraph}>
-        <div className={classes.chanceRainTitles}>
-          <div>showers</div>
-          <div>rain</div>
-          <div>drizzle</div>
+      <div className={classes.graphContainer}>
+        <div className={classes.graphTitles}>
+          <div className={classes.graphTitleItem}>showers</div>
+          <div className={classes.graphTitleItem}>rain</div>
+          <div className={classes.graphTitleItem}>drizzle</div>
         </div>
-        {testArr.map(item => {
+        {props.data.map(item => {
           return (
-            <div className={classes.chanceRainItems}>
-              <div className={classes.chanceRainDottedLine}></div>
-              <div className={classes.chanceRainValueContainer}>
-                <div className={classes.chanceRainValueLine}> </div>
+            <div className={classes.graphItems}>
+              <div className={classes.graphDottedLine}></div>
+              <div className={classes.graphValueContainer}>
+                <div className={classes.graphValueLine} style={{ height: `${item.value}%` }}>
+                  {' '}
+                </div>
               </div>
-              {item}
+              {item.title}
             </div>
           );
         })}
