@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 export default function TodayForecast() {
   const classes = useStyles({});
   const tempGraphProps: GraphProps = {
-    type: 'rain',
+    type: 'uv',
     data: [
       { title: '12PM', value: 50 },
       { title: '2PM', value: 60 },

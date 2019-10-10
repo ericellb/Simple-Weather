@@ -75,15 +75,24 @@ export interface GraphProps {
 
 export default function DataGraph(props: GraphProps) {
   const classes = useStyles({});
+  // Titles default to rain type
+  let yTitles = ['showers', 'rain', 'drizzle'];
+  let graphTitle = 'Chance of rain';
+
+  // Create titles bases on type
+  if (props.type === 'uv') {
+    graphTitle = 'UV Index';
+    yTitles = ['low', 'moderate', 'high'];
+  }
 
   return (
     <React.Fragment>
-      <div>Chance of rain</div>
+      <div>{graphTitle}</div>
       <div className={classes.graphContainer}>
         <div className={classes.graphTitles}>
-          <div className={classes.graphTitleItem}>showers</div>
-          <div className={classes.graphTitleItem}>rain</div>
-          <div className={classes.graphTitleItem}>drizzle</div>
+          <div className={classes.graphTitleItem}>{yTitles[0]}</div>
+          <div className={classes.graphTitleItem}>{yTitles[1]}</div>
+          <div className={classes.graphTitleItem}>{yTitles[2]}</div>
         </div>
         {props.data.map(item => {
           return (
