@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   },
   leftContainer: {
     order: 1,
-    flexBasis: '65%',
+    flexBasis: '60%',
     height: '100%',
     padding: '24px',
     boxSizing: 'border-box',
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
   rightContainer: {
     order: 2,
-    flexBasis: '35%',
+    flexBasis: '40%',
     height: '100%',
     padding: '24px',
     boxSizing: 'border-box',

@@ -3,13 +3,6 @@ import { Cloud, InputOutlined } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-  todayInfo: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    color: '#9999ac'
-  },
   todayDate: {
     padding: '1em',
     paddingBottom: '0px',
@@ -26,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   todayDateToday: {
     padding: '8px',
     paddingLeft: '0',
-    fontSize: '32px',
+    fontSize: '28px',
     color: 'white'
   },
   todayDateDate: {
@@ -60,7 +53,8 @@ const useStyles = makeStyles(theme => ({
   },
   todayExtra: {
     padding: '1em',
-    display: 'flex'
+    display: 'flex',
+    justifyContent: 'center'
   },
   extraFeels: {
     paddingRight: '0.8em'
@@ -73,7 +67,7 @@ const useStyles = makeStyles(theme => ({
 export default function TodayInfo() {
   const classes = useStyles({});
   return (
-    <div className={classes.todayInfo}>
+    <React.Fragment>
       <div className={classes.todayDate}>
         <Cloud />
         <div className={classes.todayDateInfo}>
@@ -92,6 +86,6 @@ export default function TodayInfo() {
         <div className={classes.extraFeels}>Feels Like 32</div> •{' '}
         <div className={classes.extraSunset}>Sunset 20:15</div>
       </div>
-    </div>
+    </React.Fragment>
   );
 }

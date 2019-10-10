@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import TodayInfo from './TodayInfo';
+import RainGraph from './RainGraph';
 
 const useStyles = makeStyles(theme => ({
   todayContainer: {
@@ -9,8 +10,18 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
     flexWrap: 'wrap'
   },
+  todayInfo: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    color: '#9999ac',
+    alignSelf: 'flex-end'
+  },
   chanceRain: {
-    width: '100%'
+    width: '100%',
+    height: '30%',
+    alignSelf: 'flex-end'
   }
 }));
 
@@ -19,8 +30,12 @@ export default function TodayForecast() {
 
   return (
     <div className={classes.todayContainer}>
-      <TodayInfo />
-      <div className={classes.chanceRain}>Chance of rain</div>
+      <div className={classes.todayInfo}>
+        <TodayInfo />
+      </div>
+      <div className={classes.chanceRain}>
+        <RainGraph />
+      </div>
     </div>
   );
 }
