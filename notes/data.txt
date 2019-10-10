@@ -1,0 +1,18 @@
+What data do I need?
+
+Multiple Days View
+- % Percipitation
+- Weather Type (Sunny, Cloudy, Rainy)
+- Low + High Temperature
+
+
+Daily View
+- Current Weather
+  - Date
+  - Weather Type (Sunny, Cloudy, Rainy)
+  - Temperature
+  - Feels Like
+  - Sunset
+
+- Chance of Rain
+  - Percentage Percipication by Hour
