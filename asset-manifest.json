@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/Simple-Weather/static/css/main.6ddeb495.chunk.css",
+    "main.js": "/Simple-Weather/static/js/main.d48472d3.chunk.js",
+    "main.js.map": "/Simple-Weather/static/js/main.d48472d3.chunk.js.map",
+    "runtime-main.js": "/Simple-Weather/static/js/runtime-main.567a5c4a.js",
+    "runtime-main.js.map": "/Simple-Weather/static/js/runtime-main.567a5c4a.js.map",
+    "static/js/2.a31de740.chunk.js": "/Simple-Weather/static/js/2.a31de740.chunk.js",
+    "static/js/2.a31de740.chunk.js.map": "/Simple-Weather/static/js/2.a31de740.chunk.js.map",
+    "index.html": "/Simple-Weather/index.html",
+    "precache-manifest.4338017df0a1ef6d72e5f9ff4c229464.js": "/Simple-Weather/precache-manifest.4338017df0a1ef6d72e5f9ff4c229464.js",
+    "service-worker.js": "/Simple-Weather/service-worker.js",
+    "static/css/main.6ddeb495.chunk.css.map": "/Simple-Weather/static/css/main.6ddeb495.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.567a5c4a.js",
+    "static/js/2.a31de740.chunk.js",
+    "static/css/main.6ddeb495.chunk.css",
+    "static/js/main.d48472d3.chunk.js"
+  ]
+}
