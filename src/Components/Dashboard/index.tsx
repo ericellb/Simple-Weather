@@ -43,13 +43,13 @@ export default function Dashboard() {
   const forecastProps: ForecastProps = {
     type: 'forecast',
     data: [
-      { day: 'Monday', high: 17, low: 14 },
-      { day: 'Tuesday', high: 28, low: 14 },
-      { day: 'Wednesday', high: 31, low: 14 },
-      { day: 'Thursday', high: 14, low: 14 },
-      { day: 'Friday', high: 18, low: 14 },
-      { day: 'Saturday', high: 24, low: 14 },
-      { day: 'Sunday', high: 24, low: 14 }
+      { day: 'Monday', weatherId: '01d', precip: '50', highTemp: 27, lowTemp: 19, dayTemp: 25 },
+      { day: 'Tuesday', weatherId: '02d', precip: '50', highTemp: 28, lowTemp: 14, dayTemp: 16 },
+      { day: 'Wednesday', weatherId: '04d', precip: '50', highTemp: 31, lowTemp: 14, dayTemp: 16 },
+      { day: 'Thursday', weatherId: '03d', precip: '50', highTemp: 14, lowTemp: 14, dayTemp: 16 },
+      { day: 'Friday', weatherId: '02d', precip: '50', highTemp: 18, lowTemp: 14, dayTemp: 16 },
+      { day: 'Saturday', weatherId: '01d', precip: '50', highTemp: 24, lowTemp: 14, dayTemp: 16 },
+      { day: 'Sunday', weatherId: '04d', precip: '50', highTemp: 24, lowTemp: 14, dayTemp: 16 }
     ]
   };
 
