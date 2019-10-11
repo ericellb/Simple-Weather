@@ -32,7 +32,6 @@ export interface TodayForecastProps {
 
 export default function TodayForecast(props: TodayForecastProps) {
   const classes = useStyles({});
-  const today = new Date();
 
   return (
     <div className={classes.todayContainer}>

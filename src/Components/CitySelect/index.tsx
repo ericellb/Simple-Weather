@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef, createRef } from 'react';
-import { makeStyles, IconButton, InputBase, Popper, Paper, List, ListItem } from '@material-ui/core';
-import { Search } from '@material-ui/icons';
+import React, { useEffect, useState } from 'react';
+import { makeStyles } from '@material-ui/core';
 import axios from 'axios';
-/* global google */
+import CitySearch from '../CitySearch';
 
 const useStyles = makeStyles(theme => ({
   weatherTitle: {
@@ -37,6 +36,9 @@ const useStyles = makeStyles(theme => ({
   },
   popperPaper: {
     padding: '1em'
+  },
+  selected: {
+    backgroundColor: 'rgba(0, 0, 0, 0.08)'
   }
 }));
 
@@ -45,18 +47,11 @@ const OPEN_CAGE_KEY = 'c2ab0fa51f0844fcade0197c0c059111';
 const OPEN_CAGE_URL = `https://api.opencagedata.com/geocode/v1/json?key=${OPEN_CAGE_KEY}&q=`;
 const UNPLASH_KEY = '2d5300fdc7dc99bbacd2a1fca10e4d536a552e7b4f470ee485a987a7748b858b';
 const UNPLASH_URL = `https://api.unsplash.com/search/photos?page=1&per_page=1&client_id=${UNPLASH_KEY}&query=`;
-const GPLACES_KEY = 'AIzaSyA4mxHvWDDKTOKj0_jYCwygGY2Qzc209Xg';
-const GPLACES_URL = `https://maps.googleapis.com/maps/api/place/autocomplete/json?types=(cities)&key=${GPLACES_KEY}&input=`;
 
 export default function CitySelect() {
   const classes = useStyles({});
   const [cities, setCities] = useState(['Montreal']);
   const [citiesData, setCitiesData] = useState<{ name: string; img: string }[]>();
-  const [citySearch, setCitySearch] = useState('');
-  const [predictions, setPredictions] = useState<string[]>();
-  const [popperOpen, setPopperOpen] = useState(false);
-  const searchRef = createRef<HTMLInputElement>();
-  const [anchorEl, setAnchorEl] = useState(null);
 
   // On load, get geolocation of current city for default
   useEffect(() => {
@@ -68,6 +63,7 @@ export default function CitySelect() {
         });
       });
     }
+    // eslint-disable-next-line
   }, []);
 
   // Watch cities for changes, and do request for city image
@@ -79,76 +75,9 @@ export default function CitySelect() {
     });
   }, [cities]);
 
-  // Setup Autocomplete server only when Ref is set
-  useEffect(() => {
-    if (searchRef.current) {
-      let request = {
-        input: citySearch,
-        types: ['(cities)']
-      };
-      let autocomplete = new google.maps.places.AutocompleteService();
-      autocomplete.getPlacePredictions(request, predictionsCallback);
-    }
-  }, [searchRef]);
-
-  // Handles Changing places
-  const predictionsCallback = (predictions: any, status: any) => {
-    if (status != google.maps.places.PlacesServiceStatus.OK) return;
-    let tempPredictions: string[] = [];
-    predictions.forEach((prediction: any) => {
-      tempPredictions.push(prediction.description);
-    });
-    setPredictions(tempPredictions);
-  };
-
-  // Handles setting anchor to input
-  const handleAnchorSet = (e: any) => {
-    if (e && anchorEl === null) {
-      setAnchorEl(e);
-    }
-  };
-
-  // Handles on change for search, and autocompletion via Google Places
-  const handleSearchChange = (citySearchStr: string) => {
-    setCitySearch(citySearchStr);
-    setPopperOpen(true);
-  };
-
-  // Handles clicking on a prediction
-  const handlePredictionClick = (cityName: string) => {
-    setPopperOpen(false);
-    setCitySearch(cityName);
-  };
-
   return (
     <React.Fragment>
-      <div className={classes.searchBarContainer} ref={e => handleAnchorSet(e)}>
-        <IconButton aria-label="search">
-          <Search />
-        </IconButton>
-        <InputBase
-          className={classes.searchBar}
-          placeholder="Search new city..."
-          inputProps={{ 'aria-label': 'search google maps' }}
-          value={citySearch}
-          onChange={e => handleSearchChange(e.target.value)}
-          inputRef={searchRef}
-        />
-        <Popper open={popperOpen} anchorEl={anchorEl} placement="bottom-start" className={classes.popperBar}>
-          <Paper className={classes.popperPaper}>
-            <List>
-              {predictions &&
-                predictions.map(prediction => {
-                  return (
-                    <ListItem button onClick={() => handlePredictionClick(prediction)}>
-                      {prediction}
-                    </ListItem>
-                  );
-                })}
-            </List>
-          </Paper>
-        </Popper>
-      </div>
+      <CitySearch />
       <h2>
         <span className={classes.weatherTitle}>Weather</span> Forecast
       </h2>
@@ -158,7 +87,7 @@ export default function CitySelect() {
           citiesData.map(city => {
             return (
               <div className={classes.cityItem} key={city.name}>
-                <img className={classes.cityImage} src={city.img} />
+                <img className={classes.cityImage} src={city.img} alt={city.name} />
                 <div className={classes.cityName}>{city.name}</div>
               </div>
             );
