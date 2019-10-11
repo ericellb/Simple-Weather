@@ -5,14 +5,14 @@ import './style.css';
 const useStyles = makeStyles(theme => ({
   graphContainer: {
     display: 'flex',
-    height: '100%',
+    height: '95%',
     fontSize: '12px',
     flexDirection: 'column'
   },
   graphItems: {
     flexBasis: '15%',
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     position: 'relative'
   },
   graphDayItem: {
@@ -36,7 +36,10 @@ const useStyles = makeStyles(theme => ({
   },
   graphBars: {
     position: 'relative',
-    width: '100%'
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'flex-end'
   },
   graphLineContainer: {
     width: '4px',
@@ -69,7 +72,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     left: '50%',
     borderRadius: '0px 8px 8px 0px',
-    top: '-2px'
+    top: '-5px'
   },
   graphValueLineLow: {
     width: '50%',
@@ -78,28 +81,9 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     right: '50%',
     borderRadius: '8px 0px 0px 8px',
-    top: '-2px'
+    top: '-5px'
   }
 }));
-
-// CSS FOR GRAPH LINES
-/*
-LEFT BAR
-left: calc(50% - 40%);
-width: 40%;
-height: 8px;
-position: absolute;
-background: #302e62;
-border-radius: 8px 0px 0px 8px;
-
-RIGHT BAR
-left: 50%;
-width: 20%;
-height: 8px;
-position: absolute;
-background: #302e62;
-border-radius: 0px 8px 8px 0px;
-*/
 
 export interface ForecastProps {
   type: 'forecast';
@@ -116,7 +100,6 @@ export interface ForecastProps {
 export default function WeeklyForecast(props: ForecastProps) {
   const classes = useStyles({});
   // Titles default to rain type
-  let yTitles = ['showers', 'rain', 'drizzle'];
   let graphTitle = 'Precipitation';
 
   // Gets the appropriate FA Icon depending on weather ID
@@ -174,7 +157,7 @@ export default function WeeklyForecast(props: ForecastProps) {
           let barTempLengths = calcHighLowWidth(item.lowTemp, item.highTemp);
           console.log(barTempLengths);
           return (
-            <div className={classes.graphItems}>
+            <div className={classes.graphItems} key={item.day}>
               <div className={classes.graphDayItem}>{item.day}</div>
               <div className={classes.graphOtherItem}>
                 <Icon className="fa fa-tint" /> {item.precip}%

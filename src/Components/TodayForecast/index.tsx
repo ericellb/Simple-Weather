@@ -25,37 +25,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function TodayForecast() {
+export interface TodayForecastProps {
+  todayData: TodayInfoProps;
+  graphData: GraphProps;
+}
+
+export default function TodayForecast(props: TodayForecastProps) {
   const classes = useStyles({});
   const today = new Date();
-  const tempTodayInfoProps: TodayInfoProps = {
-    data: {
-      temp: 26,
-      city: 'Montreal, Quebec',
-      feelsLike: 28,
-      sunTime: 'Sunset : 20:18'
-    }
-  };
-
-  const tempGraphProps: GraphProps = {
-    type: 'rain',
-    data: [
-      { title: '12PM', value: 50 },
-      { title: '2PM', value: 60 },
-      { title: '4PM', value: 70 },
-      { title: '6PM', value: 80 },
-      { title: '8PM', value: 90 },
-      { title: '10PM', value: 100 }
-    ]
-  };
 
   return (
     <div className={classes.todayContainer}>
       <div className={classes.todayInfo}>
-        <TodayInfo data={tempTodayInfoProps.data} />
+        <TodayInfo data={props.todayData.data} />
       </div>
       <div className={classes.graph}>
-        <DataGraph type={tempGraphProps.type} data={tempGraphProps.data} />
+        <DataGraph type={props.graphData.type} data={props.graphData.data} />
       </div>
     </div>
   );

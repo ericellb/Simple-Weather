@@ -95,7 +95,7 @@ export default function DataGraph(props: GraphProps) {
         </div>
         {props.data.map(item => {
           return (
-            <div className={classes.graphItems}>
+            <div className={classes.graphItems} key={item.title}>
               <div className={classes.graphDottedLine}></div>
               <div className={classes.graphValueContainer}>
                 <div className={classes.graphValueLine} style={{ height: `${item.value}%` }} />

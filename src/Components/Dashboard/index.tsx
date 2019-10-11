@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core';
 import TodayForecast from '../TodayForecast';
 import CitySelect from '../CitySelect';
 import WeeklyForecast, { ForecastProps } from '../WeeklyForecast';
-import SearchCity from '../SearchCity';
 import './style.css';
-import DataGraph from '../TodayForecast/DataGraph';
+import { GraphProps } from '../TodayForecast/DataGraph';
+import { TodayInfoProps } from '../TodayForecast/TodayInfo';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -19,19 +19,22 @@ const useStyles = makeStyles(theme => ({
     order: 1,
     flexBasis: '60%',
     height: '100%',
-    padding: '24px',
+    padding: '32px',
     boxSizing: 'border-box',
     backgroundColor: '#f2fbff',
     borderRadius: '20px 0px 0px 20px'
   },
+  citySelectContainer: {
+    height: '50%'
+  },
   forecastContainer: {
-    height: '40%'
+    height: '50%'
   },
   rightContainer: {
     order: 2,
     flexBasis: '40%',
     height: '100%',
-    padding: '24px',
+    padding: '32px',
     boxSizing: 'border-box',
     backgroundColor: '#100e3b',
     borderRadius: '0px 20px 20px 0px'
@@ -40,6 +43,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function Dashboard() {
   const classes = useStyles({});
+
+  // Data for Weekly Forecast
   const forecastProps: ForecastProps = {
     type: 'forecast',
     data: [
@@ -53,17 +58,41 @@ export default function Dashboard() {
     ]
   };
 
+  // Data for Today Info
+  const todayData: TodayInfoProps = {
+    data: {
+      temp: 26,
+      city: 'Montreal, Quebec',
+      feelsLike: 28,
+      sunTime: 'Sunset : 20:18'
+    }
+  };
+
+  // Data for Graph on Today Info
+  const graphData: GraphProps = {
+    type: 'rain',
+    data: [
+      { title: '12PM', value: 50 },
+      { title: '2PM', value: 60 },
+      { title: '4PM', value: 70 },
+      { title: '6PM', value: 80 },
+      { title: '8PM', value: 90 },
+      { title: '10PM', value: 100 }
+    ]
+  };
+
   return (
     <div className={classes.mainContainer}>
       <div className={classes.leftContainer}>
-        <SearchCity />
-        <CitySelect />
+        <div className={classes.citySelectContainer}>
+          <CitySelect />
+        </div>
         <div className={classes.forecastContainer}>
           <WeeklyForecast type={forecastProps.type} data={forecastProps.data} />
         </div>
       </div>
       <div className={classes.rightContainer}>
-        <TodayForecast />
+        <TodayForecast todayData={todayData} graphData={graphData} />
       </div>
     </div>
   );
