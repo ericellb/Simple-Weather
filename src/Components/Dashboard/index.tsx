@@ -54,12 +54,21 @@ export default function Dashboard() {
     data: []
   });
 
+  const [graphProps, setGraphProps] = useState<GraphProps>({
+    type: 'rain',
+    data: []
+  });
+
   // Formats our forecastInfo for the Weekly 5 day chart
   useEffect(() => {
     if (forecastInfo !== undefined) {
-      let tempArr: { type: 'forecast'; data: any[]; weeklyAvg: 0 } = {
+      let tempForecastArr: { type: 'forecast'; data: any[]; weeklyAvg: 0 } = {
         weeklyAvg: 0,
         type: 'forecast',
+        data: []
+      };
+      let tempGraphArr: { type: 'rain'; data: any[] } = {
+        type: 'rain',
         data: []
       };
       for (let i = 0; i < 5; i++) {
@@ -69,7 +78,7 @@ export default function Dashboard() {
         tempObj.highTemp = forecastInfo[index].main.temp_max;
         tempObj.dayTemp = forecastInfo[index].main.temp;
         tempObj.weatherId = forecastInfo[index].weather[0].icon;
-        tempObj.day = moment(forecastInfo[index].dt).format('ddd, MMM do');
+        tempObj.day = moment.unix(forecastInfo[index].dt).format('ddd, MMM do');
 
         // Depending if we got rain or snow... Kinda shit but we gotta do it...
         if (forecastInfo[index].rain) {
@@ -82,11 +91,29 @@ export default function Dashboard() {
           tempObj.precip = 0;
         }
 
-        tempArr.data.push(tempObj);
-        tempArr.weeklyAvg += tempObj.dayTemp;
+        tempForecastArr.data.push(tempObj);
+        tempForecastArr.weeklyAvg += tempObj.dayTemp;
       }
-      tempArr.weeklyAvg /= 5;
-      setForecastProps(tempArr);
+
+      for (let i = 0; i < 6; i++) {
+        let tempObj: any = {};
+        tempObj.title = moment.unix(forecastInfo[i].dt).format('h A');
+        // Depending if we got rain or snow... Kinda shit but we gotta do it...
+        if (forecastInfo[i].rain) {
+          tempObj.value = forecastInfo[i].rain;
+        } else if (forecastInfo[i].snow) {
+          tempObj.value = forecastInfo[i].snow;
+        }
+        tempObj.value = Math.round(tempObj.value['3h'] * 100) / 100;
+        if (isNaN(tempObj.value)) {
+          tempObj.value = 0;
+        }
+        tempGraphArr.data.push(tempObj);
+      }
+
+      tempForecastArr.weeklyAvg /= 5;
+      setForecastProps(tempForecastArr);
+      setGraphProps(tempGraphArr);
     }
   }, [forecastInfo]);
 
@@ -100,19 +127,6 @@ export default function Dashboard() {
     }
   };
 
-  // Data for Graph on Today Info
-  const graphData: GraphProps = {
-    type: 'rain',
-    data: [
-      { title: '12PM', value: 50 },
-      { title: '2PM', value: 60 },
-      { title: '4PM', value: 70 },
-      { title: '6PM', value: 80 },
-      { title: '8PM', value: 90 },
-      { title: '10PM', value: 100 }
-    ]
-  };
-
   return (
     <div className={classes.mainContainer}>
       <div className={classes.leftContainer}>
@@ -124,7 +138,7 @@ export default function Dashboard() {
         </div>
       </div>
       <div className={classes.rightContainer}>
-        <TodayForecast todayData={todayData} graphData={graphData} />
+        <TodayForecast todayData={todayData} graphData={graphProps} />
       </div>
     </div>
   );

@@ -144,11 +144,7 @@ export default function WeeklyForecast(props: ForecastProps) {
   // Calculates using average how wide bars should be
   // Need to make this more meaningful kind of useless atm...
   const calcHighLowWidth = (low: number, high: number) => {
-    let weeklyAvg = props.weeklyAvg;
-
-    let avg = (high + low) / 2;
     let tempHigh = (high - props.weeklyAvg) * 5;
-    console.log(tempHigh);
     if (tempHigh > 50) tempHigh = 50;
     else if (tempHigh < 0) tempHigh = 0;
     let tempLow = props.weeklyAvg - low;
