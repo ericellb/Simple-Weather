@@ -105,7 +105,6 @@ export default function CitySearch() {
       setSelectedPrediction(tempSelected);
     } else if (e.key === 'Enter') {
       if (predictions && selectedPrediction !== null) {
-        console.log(predictions[0]);
         handlePredictionSelect(predictions[selectedPrediction]);
       }
     }

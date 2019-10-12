@@ -1,6 +1,8 @@
 import React from 'react';
 import { makeStyles, Icon } from '@material-ui/core';
 import './style.css';
+import { StoreState } from '../../Reducers';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   graphContainer: {
@@ -21,14 +23,13 @@ const useStyles = makeStyles(theme => ({
     color: '#202d5d'
   },
   graphOtherItem: {
-    paddingRight: '6px',
-    paddingLeft: '6px',
-    minWidth: '60px',
+    paddingLeft: '16px',
+    minWidth: '90px',
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     color: '#a4afb4',
-    fontSize: '15px'
+    fontSize: '16px'
   },
   graphOtherIcon: {
     width: '100%',
@@ -87,6 +88,7 @@ const useStyles = makeStyles(theme => ({
 
 export interface ForecastProps {
   type: 'forecast';
+  weeklyAvg: number;
   data: {
     day: string;
     precip: string;
@@ -99,6 +101,7 @@ export interface ForecastProps {
 
 export default function WeeklyForecast(props: ForecastProps) {
   const classes = useStyles({});
+  const tempScale = useSelector((state: StoreState) => state.weather.tempScale);
   // Titles default to rain type
   let graphTitle = 'Precipitation';
 
@@ -141,12 +144,28 @@ export default function WeeklyForecast(props: ForecastProps) {
   // Calculates using average how wide bars should be
   // Need to make this more meaningful kind of useless atm...
   const calcHighLowWidth = (low: number, high: number) => {
+    let weeklyAvg = props.weeklyAvg;
+
     let avg = (high + low) / 2;
-    let tempHigh = (high - avg) * 5;
+    let tempHigh = (high - props.weeklyAvg) * 5;
+    console.log(tempHigh);
     if (tempHigh > 50) tempHigh = 50;
-    let tempLow = avg - low;
+    else if (tempHigh < 0) tempHigh = 0;
+    let tempLow = props.weeklyAvg - low;
     if (tempLow > 50) tempLow = 50;
+    else if (tempLow < 0) tempLow = 0;
+
     return { low: tempLow, high: tempHigh };
+  };
+
+  // Converts from Kelvin to Celcius / Farenheit depending on current tempScale
+  const convertTempScale = (temp: number) => {
+    // Kelvin to Celcius
+    temp = temp - 273.15;
+    if (tempScale === 'farenheit') {
+      temp = temp * (9 / 5) + 32;
+    }
+    return Math.floor(temp * 10) / 10 + (tempScale === 'celsius' ? '°C' : '°F');
   };
 
   return (
@@ -155,17 +174,17 @@ export default function WeeklyForecast(props: ForecastProps) {
       <div className={classes.graphContainer}>
         {props.data.map(item => {
           let barTempLengths = calcHighLowWidth(item.lowTemp, item.highTemp);
-          console.log(barTempLengths);
           return (
             <div className={classes.graphItems} key={item.day}>
               <div className={classes.graphDayItem}>{item.day}</div>
               <div className={classes.graphOtherItem}>
-                <Icon className="fa fa-tint" /> {item.precip}%
+                <Icon className="fa fa-tint" />
+                {item.precip} mm
               </div>
               <div className={classes.graphOtherItem}>
                 <Icon className={`${weatherIdToFAIcon(item.weatherId) + ' ' + classes.graphOtherIcon}`} />
               </div>
-              <div className={classes.graphOtherItem}>{item.lowTemp}°C</div>
+              <div className={classes.graphOtherItem}>{convertTempScale(item.lowTemp)}</div>
               <div className={classes.graphBars}>
                 <div className={classes.graphDottedLine}></div>
                 <div className={classes.graphValueContainer}>
@@ -175,7 +194,7 @@ export default function WeeklyForecast(props: ForecastProps) {
                   </div>
                 </div>
               </div>
-              <div className={classes.graphOtherItem}>{item.highTemp}°C</div>
+              <div className={classes.graphOtherItem}>{convertTempScale(item.highTemp)}</div>
             </div>
           );
         })}
