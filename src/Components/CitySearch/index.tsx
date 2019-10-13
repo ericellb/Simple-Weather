@@ -1,6 +1,8 @@
 import React, { useEffect, useState, createRef } from 'react';
 import { makeStyles, IconButton, InputBase, Popper, Paper, List, ListItem } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
+import { fetchWeatherData } from '../../Actions';
 /* global google */
 
 const useStyles = makeStyles(theme => ({
@@ -29,6 +31,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function CitySearch() {
   const classes = useStyles({});
+  const dispatch = useDispatch();
   const [citySearch, setCitySearch] = useState('');
   const [predictions, setPredictions] = useState<string[]>();
   const [selectedPrediction, setSelectedPrediction] = useState<number | null>(null);
@@ -66,6 +69,11 @@ export default function CitySearch() {
     }
   };
 
+  // Handles Submit of the search
+  const handleSearchSubmit = (cityName: string) => {
+    dispatch(fetchWeatherData(cityName));
+  };
+
   // Handles on change for search, and autocompletion via Google Places
   const handleSearchChange = (citySearchStr: string) => {
     setCitySearch(citySearchStr);
@@ -80,6 +88,7 @@ export default function CitySearch() {
   const handlePredictionSelect = (cityName: string) => {
     setPopperOpen(false);
     setCitySearch(cityName);
+    handleSearchSubmit(cityName);
   };
 
   // Handles ArrowDown + Up to Naviagate Predicitons list

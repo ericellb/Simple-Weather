@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import axios from 'axios';
 import CitySearch from '../CitySearch';
+import { useDispatch } from 'react-redux';
+import { fetchWeatherData } from '../../Actions';
 
 const useStyles = makeStyles(theme => ({
   weatherTitle: {
@@ -50,7 +52,9 @@ const UNPLASH_URL = `https://api.unsplash.com/search/photos?page=1&per_page=1&cl
 
 export default function CitySelect() {
   const classes = useStyles({});
-  const [cities, setCities] = useState(['Montreal']);
+  const dispatch = useDispatch();
+  const [cities, setCities] = useState(['New York']);
+  const [selectedCity, setSelectedCity] = useState(cities[0]);
   const [citiesData, setCitiesData] = useState<{ name: string; img: string }[]>();
 
   // On load, get geolocation of current city for default
@@ -59,7 +63,8 @@ export default function CitySelect() {
       navigator.geolocation.getCurrentPosition(pos => {
         let query = pos.coords.latitude + '+' + pos.coords.longitude;
         axios.get(OPEN_CAGE_URL + query).then(res => {
-          setCities([...cities, res.data.results[0].components.city]);
+          console.log(res);
+          setCities([...cities, res.data.results[0].components.town]);
         });
       });
     }
@@ -68,12 +73,19 @@ export default function CitySelect() {
 
   // Watch cities for changes, and do request for city image
   useEffect(() => {
-    cities.forEach(city => {
-      axios.get(UNPLASH_URL + city).then(res => {
-        setCitiesData([{ name: city, img: res.data.results[0].urls.thumb }]);
+    if (cities) {
+      cities.forEach(city => {
+        console.log(city);
+        axios.get(UNPLASH_URL + city).then(res => {
+          setCitiesData([{ name: city, img: res.data.results[0].urls.thumb }]);
+        });
       });
-    });
+    }
   }, [cities]);
+
+  useEffect(() => {
+    dispatch(fetchWeatherData(selectedCity));
+  }, [selectedCity]);
 
   return (
     <React.Fragment>

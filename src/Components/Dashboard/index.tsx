@@ -4,11 +4,10 @@ import TodayForecast from '../TodayForecast';
 import CitySelect from '../CitySelect';
 import WeeklyForecast, { ForecastProps } from '../WeeklyForecast';
 import './style.css';
-import DataGraph, { GraphProps } from '../TodayForecast/DataGraph';
+import { GraphProps } from '../TodayForecast/DataGraph';
 import { TodayInfoProps } from '../TodayForecast/TodayInfo';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
-import { WeatherStore } from '../../Reducers/weatherReducer';
 import { StoreState } from '../../Reducers';
 
 const useStyles = makeStyles(theme => ({
@@ -48,12 +47,26 @@ const useStyles = makeStyles(theme => ({
 export default function Dashboard() {
   const classes = useStyles({});
   const forecastInfo = useSelector((state: StoreState) => state.weather.forecastData);
+  const todayInfo = useSelector((state: StoreState) => state.weather.todayData);
+
+  // Props for Weekly Forecast
   const [forecastProps, setForecastProps] = useState<ForecastProps>({
     weeklyAvg: 0,
     type: 'forecast',
     data: []
   });
 
+  // Props for Today Info Data
+  const [todayData, setTodayData] = useState<TodayInfoProps>({
+    data: {
+      temp: 26,
+      city: 'New York, New York',
+      humidity: 28,
+      sunTime: 'Sunset : 20:18'
+    }
+  });
+
+  // Props for Today Info Graph
   const [graphProps, setGraphProps] = useState<GraphProps>({
     type: 'rain',
     data: []
@@ -61,7 +74,7 @@ export default function Dashboard() {
 
   // Formats our forecastInfo for the Weekly 5 day chart
   useEffect(() => {
-    if (forecastInfo !== undefined) {
+    if (forecastInfo.length > 0) {
       let tempForecastArr: { type: 'forecast'; data: any[]; weeklyAvg: 0 } = {
         weeklyAvg: 0,
         type: 'forecast',
@@ -71,6 +84,8 @@ export default function Dashboard() {
         type: 'rain',
         data: []
       };
+
+      // Format data for Weekly Forecast
       for (let i = 0; i < 5; i++) {
         let tempObj: any = {};
         let index = i * 8;
@@ -78,7 +93,7 @@ export default function Dashboard() {
         tempObj.highTemp = forecastInfo[index].main.temp_max;
         tempObj.dayTemp = forecastInfo[index].main.temp;
         tempObj.weatherId = forecastInfo[index].weather[0].icon;
-        tempObj.day = moment.unix(forecastInfo[index].dt).format('ddd, MMM do');
+        tempObj.day = moment.unix(forecastInfo[index].dt).format('ddd, MMM Do');
 
         // Depending if we got rain or snow... Kinda shit but we gotta do it...
         if (forecastInfo[index].rain) {
@@ -86,7 +101,13 @@ export default function Dashboard() {
         } else if (forecastInfo[index].snow) {
           tempObj.precip = forecastInfo[index].snow;
         }
-        tempObj.precip = Math.round(tempObj.precip['3h'] * 100) / 100;
+
+        if (tempObj.precip) {
+          if (tempObj.precip['3h']) {
+            tempObj.precip = Math.round(tempObj.precip['3h'] * 100) / 100;
+          }
+        }
+
         if (isNaN(tempObj.precip)) {
           tempObj.precip = 0;
         }
@@ -95,6 +116,7 @@ export default function Dashboard() {
         tempForecastArr.weeklyAvg += tempObj.dayTemp;
       }
 
+      // Format Data for TodayInfo Precipitation Graph
       for (let i = 0; i < 6; i++) {
         let tempObj: any = {};
         tempObj.title = moment.unix(forecastInfo[i].dt).format('h A');
@@ -104,28 +126,36 @@ export default function Dashboard() {
         } else if (forecastInfo[i].snow) {
           tempObj.value = forecastInfo[i].snow;
         }
-        tempObj.value = Math.round(tempObj.value['3h'] * 100) / 100;
+        if (tempObj.value) {
+          if (tempObj.value['3h']) {
+            tempObj.value = Math.round(tempObj.value['3h'] * 100) / 100;
+          }
+        }
         if (isNaN(tempObj.value)) {
           tempObj.value = 0;
         }
         tempGraphArr.data.push(tempObj);
       }
 
+      console.log(tempGraphArr);
       tempForecastArr.weeklyAvg /= 5;
+
+      // Sets forecast and graph data objects
       setForecastProps(tempForecastArr);
       setGraphProps(tempGraphArr);
     }
   }, [forecastInfo]);
 
-  // Data for Today Info
-  const todayData: TodayInfoProps = {
-    data: {
-      temp: 26,
-      city: 'Montreal, Quebec',
-      feelsLike: 28,
-      sunTime: 'Sunset : 20:18'
+  useEffect(() => {
+    if (todayInfo !== undefined) {
+      let tempObj: any = { data: {} };
+      tempObj.data.city = todayInfo.name;
+      tempObj.data.temp = todayInfo.main.temp;
+      tempObj.data.sunTime = moment.unix(todayInfo.sys.sunset).format('h:mm A');
+      tempObj.data.humidity = todayInfo.main.humidity;
+      setTodayData(tempObj);
     }
-  };
+  }, [todayInfo]);
 
   return (
     <div className={classes.mainContainer}>

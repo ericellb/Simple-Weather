@@ -2,6 +2,8 @@ import React from 'react';
 import { Cloud, InputOutlined } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
+import { StoreState } from '../../Reducers';
 
 const useStyles = makeStyles(theme => ({
   todayDate: {
@@ -69,14 +71,25 @@ export interface TodayInfoProps {
   data: {
     temp: number;
     city: string;
-    feelsLike: number;
+    humidity: number;
     sunTime: string;
   };
 }
 
 export default function TodayInfo(props: TodayInfoProps) {
   const classes = useStyles({});
+  const tempScale = useSelector((state: StoreState) => state.weather.tempScale);
   let todayDate = moment(new Date()).format('ddd, MMM do');
+
+  // Converts from Kelvin to Celcius / Farenheit depending on current tempScale
+  const convertTempScale = (temp: number) => {
+    // Kelvin to Celcius
+    temp = temp - 273.15;
+    if (tempScale === 'farenheit') {
+      temp = temp * (9 / 5) + 32;
+    }
+    return Math.floor(temp * 10) / 10;
+  };
 
   return (
     <React.Fragment>
@@ -88,15 +101,15 @@ export default function TodayInfo(props: TodayInfoProps) {
         </div>
       </div>
       <div className={classes.todayTemp}>
-        {props.data.temp}
-        <div className={classes.todayTempDeg}>°C</div>
+        {convertTempScale(props.data.temp)}
+        <div className={classes.todayTempDeg}>{tempScale === 'celsius' ? '°C' : '°F'}</div>
       </div>
       <div className={classes.todayCity}>
         {props.data.city} <InputOutlined className={classes.todayCityIcon} />
       </div>
       <div className={classes.todayExtra}>
-        <div className={classes.extraFeels}>Feels Like {props.data.feelsLike}</div> •{' '}
-        <div className={classes.extraSunset}>{props.data.sunTime}</div>
+        <div className={classes.extraFeels}>Humidity {props.data.humidity} %</div> •{' '}
+        <div className={classes.extraSunset}>{props.data.sunTime} Sunset</div>
       </div>
     </React.Fragment>
   );

@@ -1,17 +1,22 @@
 import { string } from 'prop-types';
 
 export enum ACTIONS {
-  UPDATE_TODAY,
-  UPDATE_FORECAST,
+  UPDATE_DAILY,
+  UPDATE_WEEKLY,
   UPDATE_TEMP_SCALE
 }
 
-export type WeatherActions = UpdateForecastAction | UpdateTempScale;
+export type WeatherActions = UpdateWeeklyAction | UpdateDailyAction | UpdateTempScale;
 
 /* Action Types */
-export type UpdateForecastAction = {
-  type: ACTIONS.UPDATE_FORECAST;
-  payload: WeatherInfo;
+export type UpdateWeeklyAction = {
+  type: ACTIONS.UPDATE_WEEKLY;
+  payload: WeatherInfo[];
+};
+
+export type UpdateDailyAction = {
+  type: ACTIONS.UPDATE_DAILY;
+  payload: TodayInfo;
 };
 
 export type UpdateTempScale = {
@@ -58,4 +63,47 @@ export type WeatherInfo = {
     '3h'?: number;
   };
   dt_txt: string;
-}[];
+};
+
+export type TodayInfo = {
+  coord: {
+    lon: number;
+    lat: number;
+  };
+  weather: [
+    {
+      id: number;
+      main: string;
+      description: string;
+      icon: string;
+    }
+  ];
+  base: 'stations';
+  main: {
+    temp: number;
+    pressure: number;
+    humidity: number;
+    temp_min: number;
+    temp_max: number;
+  };
+  visibility: number;
+  wind: {
+    speed: number;
+    deg: number;
+  };
+  clouds: {
+    all: number;
+  };
+  dt: number;
+  sys: {
+    type: 1;
+    id: number;
+    message: number;
+    country: string;
+    sunrise: number;
+    sunset: number;
+  };
+  id: number;
+  name: string;
+  cod: number;
+};

@@ -84,6 +84,17 @@ export default function DataGraph(props: GraphProps) {
     yTitles = ['low', 'moderate', 'high'];
   }
 
+  // Calculates Bar height for rain / uv etc..
+  const calcBarHeight = (value: number) => {
+    if (props.type === 'rain') {
+      value = value * 100;
+      if (value > 100) {
+        value = 100;
+      }
+      return value;
+    }
+  };
+
   return (
     <React.Fragment>
       <div>{graphTitle}</div>
@@ -98,7 +109,7 @@ export default function DataGraph(props: GraphProps) {
             <div className={classes.graphItems} key={item.title}>
               <div className={classes.graphDottedLine}></div>
               <div className={classes.graphValueContainer}>
-                <div className={classes.graphValueLine} style={{ height: `${item.value}%` }} />
+                <div className={classes.graphValueLine} style={{ height: `${calcBarHeight(item.value)}%` }} />
               </div>
               {item.title}
             </div>
