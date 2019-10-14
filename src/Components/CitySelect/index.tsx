@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchWeatherData, updateCities, updateSelectedCity } from '../../Actions';
 import { StoreState } from '../../Reducers';
 import { MoreVert } from '@material-ui/icons';
+import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   weatherTitle: {
@@ -21,10 +22,11 @@ const useStyles = makeStyles(theme => ({
   },
   citiesContainer: {
     display: 'flex',
-    bottom: '2em'
+    paddingBottom: '2em',
+    boxSizing: 'border-box'
   },
   cityItem: {
-    marginRight: '2em',
+    marginRight: '3em',
     boxSizing: 'border-box',
     cursor: 'pointer',
     position: 'relative'
@@ -92,17 +94,29 @@ export default function CitySelect() {
 
   // Watch cities for changes, and do request for city image
   useEffect(() => {
-    if (citiesList.length > 0) {
-      let tempCityData: any = [];
-      citiesList.forEach(city => {
-        let cityName = city.split(',')[0];
-        axios.get(UNPLASH_URL + cityName).then(res => {
+    const fetchImages = async () => {
+      if (citiesList.length > 0) {
+        console.log(citiesList);
+        let tempCityData: any = [];
+        citiesList.forEach(async (city, i) => {
+          let cityName = city.split(',')[0];
+          cityName = encodeURIComponent(cityName);
+          let res = await _axios_get(UNPLASH_URL + cityName);
           tempCityData.push({ name: city, img: res.data.results[0].urls.thumb });
+          if (i === citiesList.length - 1) {
+            setCitiesData(tempCityData);
+          }
         });
-      });
-      setCitiesData(tempCityData);
-    }
+      }
+    };
+    fetchImages();
   }, [citiesList]);
+
+  // Memoized Axios get
+  const _axios_get = _.memoize(async (url: string) => {
+    const res = await axios.get(url);
+    return res;
+  });
 
   // When city is selected fetch weather data for selected city
   useEffect(() => {
@@ -137,7 +151,7 @@ export default function CitySelect() {
   return (
     <React.Fragment>
       <CitySearch />
-      <h2 style={{ flexBasis: '100%' }}>
+      <h2 style={{ flexBasis: '100%', fontSize: '32px' }}>
         <span className={classes.weatherTitle}>Weather</span> Forecast
       </h2>
 

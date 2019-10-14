@@ -7,18 +7,24 @@ import { useSelector } from 'react-redux';
 const useStyles = makeStyles(theme => ({
   graphContainer: {
     display: 'flex',
-    height: '95%',
+    height: '90%',
     fontSize: '12px',
     flexDirection: 'column'
   },
   graphTitle: {
-    textAlign: 'center',
-    fontSize: '22px'
+    paddingLeft: '1em',
+    boxSizing: 'border-box',
+    display: 'flex'
+  },
+  graphTitleItem: {
+    paddingRight: '4em',
+    fontSize: '18px',
+    color: '#c8d1de'
   },
   graphItems: {
     flexBasis: '20%',
     display: 'flex',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     position: 'relative'
   },
   graphDayItem: {
@@ -46,7 +52,8 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: '100%',
     display: 'flex',
-    alignItems: 'flex-end'
+    alignItems: 'center',
+    top: '4px'
   },
   graphLineContainer: {
     width: '4px',
@@ -174,7 +181,13 @@ export default function WeeklyForecast(props: ForecastProps) {
   return (
     <React.Fragment>
       <div className={classes.graphTitle}>
-        {graphTitle} for {selectedCity}
+        <div className={classes.graphTitleItem}>
+          <div style={{ textAlign: 'center', color: '#202b5c' }}>Week</div>
+          <div style={{ textAlign: 'center', color: '#202b5c', fontSize: '28px' }}>•</div>
+        </div>
+        <div className={classes.graphTitleItem}>Month</div>
+        <div className={classes.graphTitleItem}>3 Month</div>
+        <div className={classes.graphTitleItem}>6 Month</div>
       </div>
       <div className={classes.graphContainer}>
         {props.data.map(item => {

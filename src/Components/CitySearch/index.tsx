@@ -1,8 +1,9 @@
 import React, { useEffect, useState, createRef } from 'react';
 import { makeStyles, IconButton, InputBase, Popper, Paper, List, ListItem } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchWeatherData, updateSelectedCity, updateCities, addCity } from '../../Actions';
+import { StoreState } from '../../Reducers';
 /* global google */
 
 const useStyles = makeStyles(theme => ({
@@ -31,7 +32,9 @@ const useStyles = makeStyles(theme => ({
 
 export default function CitySearch() {
   const classes = useStyles({});
+  const citiesList = useSelector((state: StoreState) => state.weather.cities);
   const dispatch = useDispatch();
+
   const [citySearch, setCitySearch] = useState('');
   const [predictions, setPredictions] = useState<string[]>();
   const [selectedPrediction, setSelectedPrediction] = useState<number | null>(null);
@@ -71,7 +74,9 @@ export default function CitySearch() {
 
   // Handles Submit of the search
   const handleSearchSubmit = (cityName: string) => {
-    dispatch(addCity(cityName));
+    if (!citiesList.includes(cityName)) {
+      dispatch(addCity(cityName));
+    }
     dispatch(updateSelectedCity(cityName));
   };
 
