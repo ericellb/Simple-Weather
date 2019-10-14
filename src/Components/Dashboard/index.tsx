@@ -93,8 +93,21 @@ export default function Dashboard() {
       for (let i = 0; i < 5; i++) {
         let tempObj: any = {};
         let index = i * 8;
-        tempObj.lowTemp = forecastInfo[index].main.temp_min;
-        tempObj.highTemp = forecastInfo[index].main.temp_max;
+
+        let highTemp = 0;
+        let lowTemp = 1000;
+        // Calc high + low for this day given the 3 hr windows
+        for (let j = 0; j < 8; j++) {
+          if (highTemp < forecastInfo[index + j].main.temp_max) {
+            highTemp = forecastInfo[index + j].main.temp_max;
+          }
+          if (lowTemp > forecastInfo[index + j].main.temp_min) {
+            lowTemp = forecastInfo[index + j].main.temp_min;
+          }
+        }
+
+        tempObj.lowTemp = lowTemp;
+        tempObj.highTemp = highTemp;
         tempObj.dayTemp = forecastInfo[index].main.temp;
         tempObj.weatherId = forecastInfo[index].weather[0].icon;
         tempObj.day = moment.unix(forecastInfo[index].dt).format('dddd');
@@ -117,7 +130,7 @@ export default function Dashboard() {
         }
 
         tempForecastArr.data.push(tempObj);
-        tempForecastArr.weeklyAvg += tempObj.dayTemp;
+        tempForecastArr.weeklyAvg += (tempObj.highTemp + tempObj.lowTemp) / 2;
       }
 
       // Format Data for TodayInfo Precipitation Graph

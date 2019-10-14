@@ -30,6 +30,8 @@ const useStyles = makeStyles(theme => ({
     position: 'relative'
   },
   cityName: {
+    paddingTop: '1em',
+    boxSizing: 'border-box',
     textAlign: 'center'
   },
   cityImage: {

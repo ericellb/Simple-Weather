@@ -11,6 +11,10 @@ const useStyles = makeStyles(theme => ({
     fontSize: '12px',
     flexDirection: 'column'
   },
+  graphTitle: {
+    textAlign: 'center',
+    fontSize: '22px'
+  },
   graphItems: {
     flexBasis: '20%',
     display: 'flex',
@@ -104,6 +108,7 @@ export interface ForecastProps {
 export default function WeeklyForecast(props: ForecastProps) {
   const classes = useStyles({});
   const tempScale = useSelector((state: StoreState) => state.weather.tempScale);
+  const selectedCity = useSelector((state: StoreState) => state.weather.selectedCity);
   // Titles default to rain type
   let graphTitle = 'Weekly Forecast';
 
@@ -168,7 +173,9 @@ export default function WeeklyForecast(props: ForecastProps) {
 
   return (
     <React.Fragment>
-      <div>{graphTitle}</div>
+      <div className={classes.graphTitle}>
+        {graphTitle} for {selectedCity}
+      </div>
       <div className={classes.graphContainer}>
         {props.data.map(item => {
           let barTempLengths = calcHighLowWidth(item.lowTemp, item.highTemp);
