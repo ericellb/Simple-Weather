@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import TodayInfo, { TodayInfoProps } from './TodayInfo';
 import DataGraph, { GraphProps } from './DataGraph';
+import TodayNav from './TodayNav';
 
 const useStyles = makeStyles(theme => ({
   todayContainer: {
@@ -10,13 +11,23 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
     flexWrap: 'wrap'
   },
+  todayNav: {
+    height: '5%',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
   todayInfo: {
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
     color: '#9999ac',
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
+    position: 'relative',
+    height: '60%',
+    display: 'flex'
   },
   graph: {
     width: '100%',
@@ -35,6 +46,9 @@ export default function TodayForecast(props: TodayForecastProps) {
 
   return (
     <div className={classes.todayContainer}>
+      <div className={classes.todayNav}>
+        <TodayNav />
+      </div>
       <div className={classes.todayInfo}>
         <TodayInfo data={props.todayData.data} />
       </div>

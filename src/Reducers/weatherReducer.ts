@@ -11,7 +11,7 @@ export interface WeatherStore {
 const initialState: WeatherStore = {
   todayData: undefined,
   forecastData: [],
-  cities: ['New York', 'Paris', 'Montreal'],
+  cities: ['New York, NY, USA', 'Paris, France', 'Montreal, QC, Canada'],
   selectedCity: 'New York',
   tempScale: 'celsius'
 };
@@ -24,9 +24,11 @@ export const weatherReducer = (state: WeatherStore = initialState, action: Weath
       return { ...state, todayData: action.payload };
     case ACTIONS.UPDATE_TEMP_SCALE:
       return { ...state };
+
+    case ACTIONS.ADD_CITY:
+      return { ...state, cities: [...state.cities, action.payload] };
     case ACTIONS.UPDATE_CITIES:
-      if (action.payload.append) return { ...state, cities: [...state.cities, action.payload.cityName] };
-      else return { ...state, cities: [action.payload.cityName] };
+      return { ...state, cities: action.payload };
     case ACTIONS.UPDATE_SELECTED_CITY:
       return { ...state, selectedCity: action.payload };
     default:

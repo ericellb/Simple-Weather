@@ -132,7 +132,7 @@ export default function TodayInfo(props: TodayInfoProps) {
   };
 
   return (
-    <React.Fragment>
+    <div>
       <div className={classes.todayDate}>
         <Icon className={`${classes.todayDateIcon} ${weatherIdToFAIcon(props.data.weatherId)}`} />
         <div className={classes.todayDateInfo}>
@@ -151,6 +151,7 @@ export default function TodayInfo(props: TodayInfoProps) {
         <div className={classes.extraFeels}>Humidity {props.data.humidity} %</div> •{' '}
         <div className={classes.extraSunset}>{props.data.sunTime} Sunset</div>
       </div>
-    </React.Fragment>
+      <div></div>
+    </div>
   );
 }

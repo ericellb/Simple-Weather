@@ -68,6 +68,7 @@ export default function CitySelect() {
   const selectedCity = useSelector((state: StoreState) => state.weather.selectedCity);
   const [citiesData, setCitiesData] = useState<{ name: string; img: string }[]>();
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [moreMenuCity, setMoreMenuCity] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
 
   // On load, get geolocation of current city for default
@@ -77,9 +78,9 @@ export default function CitySelect() {
         let query = pos.coords.latitude + '+' + pos.coords.longitude;
         axios.get(OPEN_CAGE_URL + query).then(res => {
           if (res.data.results[0].components.city) {
-            dispatch(updateCities(res.data.results[0].components.city, false));
+            dispatch(updateCities(res.data.results[0].components.city));
           } else if (res.data.results[0].components.town) {
-            dispatch(updateCities(res.data.results[0].components.town, false));
+            dispatch(updateCities(res.data.results[0].components.town));
           }
         });
       });
@@ -92,7 +93,8 @@ export default function CitySelect() {
     if (citiesList.length > 0) {
       let tempCityData: any = [];
       citiesList.forEach(city => {
-        axios.get(UNPLASH_URL + city).then(res => {
+        let cityName = city.split(',')[0];
+        axios.get(UNPLASH_URL + cityName).then(res => {
           tempCityData.push({ name: city, img: res.data.results[0].urls.thumb });
         });
       });
@@ -111,13 +113,24 @@ export default function CitySelect() {
   };
 
   // Handles Opening Menu when City More Clicked
-  const handleMenuOpen = (target: any) => {
+  const handleMenuOpen = (target: any, cityName: string) => {
+    setMoreMenuCity(cityName);
     setAnchorEl(target);
     setMoreMenuOpen(true);
   };
 
   // Handles Deleting City from our List
-  const handleCityDelete = (cityName: string) => {};
+  const handleCityDelete = (cityName: string) => {
+    let cities: any = [];
+    citiesList.forEach(city => {
+      if (city !== cityName) {
+        cities.push(city);
+      }
+    });
+    setMoreMenuOpen(false);
+    dispatch(updateSelectedCity(cities[0]));
+    dispatch(updateCities(cities));
+  };
 
   return (
     <React.Fragment>
@@ -130,9 +143,14 @@ export default function CitySelect() {
         {citiesData &&
           citiesData.map(city => {
             return (
-              <div className={classes.cityItem} key={city.name} onClick={() => changeSelectedCity(city.name)}>
-                <MoreVert className={classes.cityMore} onClick={e => handleMenuOpen(e.target)} />
-                <img className={classes.cityImage} src={city.img} alt={city.name} />
+              <div className={classes.cityItem} key={city.name}>
+                <MoreVert className={classes.cityMore} onClick={e => handleMenuOpen(e.target, city.name)} />
+                <img
+                  className={classes.cityImage}
+                  src={city.img}
+                  alt={city.name}
+                  onClick={() => changeSelectedCity(city.name)}
+                />
                 <div className={classes.cityName}>{city.name}</div>
               </div>
             );
@@ -146,7 +164,7 @@ export default function CitySelect() {
         onClose={() => setMoreMenuOpen(false)}
       >
         <MenuItem> Add </MenuItem>
-        <MenuItem> Delete </MenuItem>
+        <MenuItem onClick={() => handleCityDelete(moreMenuCity)}> Delete </MenuItem>
       </Menu>
     </React.Fragment>
   );

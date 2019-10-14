@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { ACTIONS, UpdateCitiesAction, UpdateSelectedCityAction } from './types';
+import { ACTIONS, UpdateCitiesAction, UpdateSelectedCityAction, AddCityAction } from './types';
 
 let WEATHER_KEY = 'e03e2793aa948f9b8e1238d63fbe9d4d';
 
@@ -17,9 +17,14 @@ export const fetchWeatherData = (cityName: string) => async (dispatch: Dispatch)
   dispatch({ type: ACTIONS.UPDATE_DAILY, payload: res2.data });
 };
 
-export const updateCities = (cityName: string, append: boolean): UpdateCitiesAction => ({
+export const updateCities = (cities: string[]): UpdateCitiesAction => ({
   type: ACTIONS.UPDATE_CITIES,
-  payload: { cityName: cityName, append: append }
+  payload: cities
+});
+
+export const addCity = (cityName: string): AddCityAction => ({
+  type: ACTIONS.ADD_CITY,
+  payload: cityName
 });
 
 export const updateSelectedCity = (cityName: string): UpdateSelectedCityAction => ({
