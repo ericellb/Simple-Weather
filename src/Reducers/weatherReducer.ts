@@ -12,7 +12,7 @@ const initialState: WeatherStore = {
   todayData: undefined,
   forecastData: [],
   cities: ['New York, NY, USA', 'Paris, France', 'Montreal, QC, Canada'],
-  selectedCity: 'New York',
+  selectedCity: 'New York, NY, USA',
   tempScale: 'celsius'
 };
 

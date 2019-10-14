@@ -92,7 +92,7 @@ export default function TodayInfo(props: TodayInfoProps) {
     if (tempScale === 'farenheit') {
       temp = temp * (9 / 5) + 32;
     }
-    return Math.floor(temp * 10) / 10;
+    return Math.round(temp);
   };
 
   // Gets the appropriate FA Icon depending on weather ID

@@ -20,7 +20,8 @@ const useStyles = makeStyles(theme => ({
   graphDayItem: {
     paddingRight: '16px',
     minWidth: '80px',
-    color: '#202d5d'
+    color: '#202d5d',
+    fontSize: '16px'
   },
   graphOtherItem: {
     paddingLeft: '16px',
@@ -28,7 +29,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    color: '#a4afb4',
+    fontWeight: 500,
+    color: '#3b4671',
     fontSize: '16px'
   },
   graphOtherIcon: {

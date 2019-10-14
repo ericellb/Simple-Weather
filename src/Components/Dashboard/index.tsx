@@ -50,6 +50,7 @@ export default function Dashboard() {
   const classes = useStyles({});
   const forecastInfo = useSelector((state: StoreState) => state.weather.forecastData);
   const todayInfo = useSelector((state: StoreState) => state.weather.todayData);
+  const selectedCity = useSelector((state: StoreState) => state.weather.selectedCity);
 
   // Props for Weekly Forecast
   const [forecastProps, setForecastProps] = useState<ForecastProps>({
@@ -96,7 +97,7 @@ export default function Dashboard() {
         tempObj.highTemp = forecastInfo[index].main.temp_max;
         tempObj.dayTemp = forecastInfo[index].main.temp;
         tempObj.weatherId = forecastInfo[index].weather[0].icon;
-        tempObj.day = moment.unix(forecastInfo[index].dt).format('ddd, MMM Do');
+        tempObj.day = moment.unix(forecastInfo[index].dt).format('dddd');
 
         // Depending if we got rain or snow... Kinda shit but we gotta do it...
         if (forecastInfo[index].rain) {
@@ -151,7 +152,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (todayInfo !== undefined) {
       let tempObj: any = { data: {} };
-      tempObj.data.city = todayInfo.name;
+      tempObj.data.city = selectedCity;
       tempObj.data.temp = todayInfo.main.temp;
       tempObj.data.sunTime = moment.unix(todayInfo.sys.sunset).format('h:mm A');
       tempObj.data.humidity = todayInfo.main.humidity;

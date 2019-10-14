@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
     boxSizing: 'border-box',
     paddingTop: '3em',
     paddingBottom: '2em',
-    backgroundImage: 'linear-gradient(#9999ac 33%, rgba(255,255,255,0) 0%)',
+    backgroundImage: 'linear-gradient(#1d1b4b 33%, rgba(255,255,255,0) 0%)',
     backgroundPosition: 'center',
     backgroundSize: '2px 16px',
     backgroundRepeat: 'repeat-y',
