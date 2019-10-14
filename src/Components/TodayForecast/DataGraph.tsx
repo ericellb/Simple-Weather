@@ -76,7 +76,7 @@ export default function DataGraph(props: GraphProps) {
   const classes = useStyles({});
   // Titles default to rain type
   let yTitles = ['showers', 'rain', 'drizzle'];
-  let graphTitle = 'Precipitation';
+  let graphTitle = 'Chance of rain';
 
   // Create titles bases on type
   if (props.type === 'uv') {

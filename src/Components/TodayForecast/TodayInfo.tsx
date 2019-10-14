@@ -2,7 +2,7 @@ import React from 'react';
 import { Cloud, InputOutlined } from '@material-ui/icons';
 import { makeStyles, Icon } from '@material-ui/core';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import { useSelector, ReactReduxContext } from 'react-redux';
 import { StoreState } from '../../Reducers';
 
 const useStyles = makeStyles(theme => ({
@@ -67,6 +67,40 @@ const useStyles = makeStyles(theme => ({
   },
   extraSunset: {
     paddingLeft: '0.8em'
+  },
+  backgroundIcons: {
+    position: 'absolute',
+    width: 'calc(100% + 64px)',
+    height: '100%',
+    overflow: 'hidden',
+    opacity: '0.6'
+  },
+  leftIcon: {
+    color: '#1e1d46 !important',
+    fontSize: '168px',
+    position: 'absolute',
+    left: '-81px',
+    top: '30%',
+    width: '300px'
+  },
+  topRightIcon: {
+    color: '#1e1d46 !important',
+    fontSize: '200px',
+    position: 'absolute',
+    right: '-41px',
+    top: '10%',
+    width: '200px'
+  },
+  rightIcon: {
+    color: '#1e1d46 !important',
+    fontSize: '96px',
+    position: 'absolute',
+    right: '-61px',
+    top: '60%',
+    width: '200px'
+  },
+  zindex: {
+    zIndex: 100
   }
 }));
 
@@ -132,26 +166,32 @@ export default function TodayInfo(props: TodayInfoProps) {
   };
 
   return (
-    <div>
-      <div className={classes.todayDate}>
-        <Icon className={`${classes.todayDateIcon} ${weatherIdToFAIcon(props.data.weatherId)}`} />
-        <div className={classes.todayDateInfo}>
-          <div className={classes.todayDateToday}>Today</div>
-          <div className={classes.todayDateDate}>{todayDate}</div>
+    <React.Fragment>
+      <div className={classes.zindex}>
+        <div className={classes.todayDate}>
+          <Icon className={`${classes.todayDateIcon} ${weatherIdToFAIcon(props.data.weatherId)}`} />
+          <div className={classes.todayDateInfo}>
+            <div className={classes.todayDateToday}>Today</div>
+            <div className={classes.todayDateDate}>{todayDate}</div>
+          </div>
+        </div>
+        <div className={classes.todayTemp}>
+          {convertTempScale(props.data.temp)}
+          <div className={classes.todayTempDeg}>{tempScale === 'celsius' ? '°C' : '°F'}</div>
+        </div>
+        <div className={classes.todayCity}>
+          {props.data.city} <InputOutlined className={classes.todayCityIcon} />
+        </div>
+        <div className={classes.todayExtra}>
+          <div className={classes.extraFeels}>Humidity {props.data.humidity} %</div> •{' '}
+          <div className={classes.extraSunset}>{props.data.sunTime} Sunset</div>
         </div>
       </div>
-      <div className={classes.todayTemp}>
-        {convertTempScale(props.data.temp)}
-        <div className={classes.todayTempDeg}>{tempScale === 'celsius' ? '°C' : '°F'}</div>
+      <div className={classes.backgroundIcons}>
+        <Icon className={`${classes.leftIcon} ${weatherIdToFAIcon(props.data.weatherId)}`} />
+        <Icon className={`${classes.topRightIcon} ${weatherIdToFAIcon(props.data.weatherId)}`} />
+        <Icon className={`${classes.rightIcon} ${weatherIdToFAIcon(props.data.weatherId)}`} />
       </div>
-      <div className={classes.todayCity}>
-        {props.data.city} <InputOutlined className={classes.todayCityIcon} />
-      </div>
-      <div className={classes.todayExtra}>
-        <div className={classes.extraFeels}>Humidity {props.data.humidity} %</div> •{' '}
-        <div className={classes.extraSunset}>{props.data.sunTime} Sunset</div>
-      </div>
-      <div></div>
-    </div>
+    </React.Fragment>
   );
 }

@@ -179,8 +179,7 @@ export default function CitySelect() {
         open={moreMenuOpen}
         onClose={() => setMoreMenuOpen(false)}
       >
-        <MenuItem> Add </MenuItem>
-        <MenuItem onClick={() => handleCityDelete(moreMenuCity)}> Delete </MenuItem>
+        <MenuItem onClick={() => handleCityDelete(moreMenuCity)}> Remove </MenuItem>
       </Menu>
     </React.Fragment>
   );

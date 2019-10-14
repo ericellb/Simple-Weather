@@ -139,7 +139,7 @@ export default function CitySearch() {
           </IconButton>
           <InputBase
             className={classes.searchBar}
-            placeholder="Search new city..."
+            placeholder="Search new place"
             inputProps={{ 'aria-label': 'search google maps' }}
             value={citySearch}
             onChange={e => handleSearchChange(e.target.value)}
