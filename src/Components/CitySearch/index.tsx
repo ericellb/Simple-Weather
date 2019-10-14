@@ -122,18 +122,24 @@ export default function CitySearch() {
 
   return (
     <React.Fragment>
-      <div className={classes.searchBarContainer} ref={e => handleAnchorSet(e)} onKeyDown={e => handleArrowNavigate(e)}>
-        <IconButton aria-label="search">
-          <Search />
-        </IconButton>
-        <InputBase
-          className={classes.searchBar}
-          placeholder="Search new city..."
-          inputProps={{ 'aria-label': 'search google maps' }}
-          value={citySearch}
-          onChange={e => handleSearchChange(e.target.value)}
-          inputRef={searchRef}
-        />
+      <div style={{ flexBasis: '100%' }}>
+        <div
+          className={classes.searchBarContainer}
+          ref={e => handleAnchorSet(e)}
+          onKeyDown={e => handleArrowNavigate(e)}
+        >
+          <IconButton aria-label="search">
+            <Search />
+          </IconButton>
+          <InputBase
+            className={classes.searchBar}
+            placeholder="Search new city..."
+            inputProps={{ 'aria-label': 'search google maps' }}
+            value={citySearch}
+            onChange={e => handleSearchChange(e.target.value)}
+            inputRef={searchRef}
+          />
+        </div>
       </div>
       <Popper open={popperOpen} anchorEl={anchorEl} placement="bottom-start" className={classes.popperBar}>
         <Paper className={classes.popperPaper}>

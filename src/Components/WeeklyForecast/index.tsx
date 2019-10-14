@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column'
   },
   graphItems: {
-    flexBasis: '15%',
+    flexBasis: '20%',
     display: 'flex',
     alignItems: 'flex-end',
     position: 'relative'
@@ -103,7 +103,7 @@ export default function WeeklyForecast(props: ForecastProps) {
   const classes = useStyles({});
   const tempScale = useSelector((state: StoreState) => state.weather.tempScale);
   // Titles default to rain type
-  let graphTitle = 'Precipitation';
+  let graphTitle = 'Weekly Forecast';
 
   // Gets the appropriate FA Icon depending on weather ID
   const weatherIdToFAIcon = (weatherId: string) => {

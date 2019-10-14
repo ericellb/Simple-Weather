@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
   leftContainer: {
     order: 1,
-    flexBasis: '60%',
+    flexBasis: '70%',
     height: '100%',
     padding: '32px',
     boxSizing: 'border-box',
@@ -28,14 +28,16 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '20px 0px 0px 20px'
   },
   citySelectContainer: {
-    height: '50%'
+    height: '50%',
+    display: 'flex',
+    flexWrap: 'wrap'
   },
   forecastContainer: {
     height: '50%'
   },
   rightContainer: {
     order: 2,
-    flexBasis: '40%',
+    flexBasis: '30%',
     height: '100%',
     padding: '32px',
     boxSizing: 'border-box',

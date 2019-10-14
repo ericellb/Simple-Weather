@@ -19,6 +19,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: '32px',
     color: 'white'
   },
+  todayDateIcon: {
+    width: '40px'
+  },
   todayDateToday: {
     padding: '8px',
     paddingLeft: '0',
@@ -131,7 +134,7 @@ export default function TodayInfo(props: TodayInfoProps) {
   return (
     <React.Fragment>
       <div className={classes.todayDate}>
-        <Icon className={`${weatherIdToFAIcon(props.data.weatherId)}`} />
+        <Icon className={`${classes.todayDateIcon} ${weatherIdToFAIcon(props.data.weatherId)}`} />
         <div className={classes.todayDateInfo}>
           <div className={classes.todayDateToday}>Today</div>
           <div className={classes.todayDateDate}>{todayDate}</div>

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Menu, MenuItem } from '@material-ui/core';
 import axios from 'axios';
 import CitySearch from '../CitySearch';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchWeatherData, updateCities, updateSelectedCity } from '../../Actions';
 import { StoreState } from '../../Reducers';
+import { MoreVert } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   weatherTitle: {
@@ -19,12 +20,14 @@ const useStyles = makeStyles(theme => ({
     width: '250px'
   },
   citiesContainer: {
-    display: 'flex'
+    display: 'flex',
+    bottom: '2em'
   },
   cityItem: {
-    padding: '1em',
+    marginRight: '2em',
     boxSizing: 'border-box',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    position: 'relative'
   },
   cityName: {
     textAlign: 'center'
@@ -33,6 +36,12 @@ const useStyles = makeStyles(theme => ({
     height: '180px',
     width: '144px',
     borderRadius: '8px'
+  },
+  cityMore: {
+    position: 'absolute',
+    right: '0.5em',
+    top: '0.5em',
+    zIndex: 100
   },
   popperBar: {
     top: '2px',
@@ -58,6 +67,8 @@ export default function CitySelect() {
   const citiesList = useSelector((state: StoreState) => state.weather.cities);
   const selectedCity = useSelector((state: StoreState) => state.weather.selectedCity);
   const [citiesData, setCitiesData] = useState<{ name: string; img: string }[]>();
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   // On load, get geolocation of current city for default
   useEffect(() => {
@@ -79,11 +90,13 @@ export default function CitySelect() {
   // Watch cities for changes, and do request for city image
   useEffect(() => {
     if (citiesList.length > 0) {
+      let tempCityData: any = [];
       citiesList.forEach(city => {
         axios.get(UNPLASH_URL + city).then(res => {
-          setCitiesData([{ name: city, img: res.data.results[0].urls.thumb }]);
+          tempCityData.push({ name: city, img: res.data.results[0].urls.thumb });
         });
       });
+      setCitiesData(tempCityData);
     }
   }, [citiesList]);
 
@@ -97,24 +110,44 @@ export default function CitySelect() {
     dispatch(updateSelectedCity(cityName));
   };
 
+  // Handles Opening Menu when City More Clicked
+  const handleMenuOpen = (target: any) => {
+    setAnchorEl(target);
+    setMoreMenuOpen(true);
+  };
+
+  // Handles Deleting City from our List
+  const handleCityDelete = (cityName: string) => {};
+
   return (
     <React.Fragment>
       <CitySearch />
-      <h2>
+      <h2 style={{ flexBasis: '100%' }}>
         <span className={classes.weatherTitle}>Weather</span> Forecast
       </h2>
 
-      <div className={classes.citiesContainer}>
+      <div className={classes.citiesContainer} style={{ flexBasis: '100%' }}>
         {citiesData &&
           citiesData.map(city => {
             return (
               <div className={classes.cityItem} key={city.name} onClick={() => changeSelectedCity(city.name)}>
+                <MoreVert className={classes.cityMore} onClick={e => handleMenuOpen(e.target)} />
                 <img className={classes.cityImage} src={city.img} alt={city.name} />
                 <div className={classes.cityName}>{city.name}</div>
               </div>
             );
           })}
       </div>
+      <Menu
+        id="cities-more-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={moreMenuOpen}
+        onClose={() => setMoreMenuOpen(false)}
+      >
+        <MenuItem> Add </MenuItem>
+        <MenuItem> Delete </MenuItem>
+      </Menu>
     </React.Fragment>
   );
 }

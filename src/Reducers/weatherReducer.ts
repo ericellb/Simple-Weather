@@ -11,7 +11,7 @@ export interface WeatherStore {
 const initialState: WeatherStore = {
   todayData: undefined,
   forecastData: [],
-  cities: ['New York'],
+  cities: ['New York', 'Paris', 'Montreal'],
   selectedCity: 'New York',
   tempScale: 'celsius'
 };
