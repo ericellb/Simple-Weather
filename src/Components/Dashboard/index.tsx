@@ -121,7 +121,7 @@ export default function Dashboard() {
 
         if (tempObj.precip) {
           if (tempObj.precip['3h']) {
-            tempObj.precip = Math.round(tempObj.precip['3h'] * 100) / 100;
+            tempObj.precip = Math.round(tempObj.precip['3h'] * 10) / 10;
           }
         }
 

@@ -23,13 +23,13 @@ const useStyles = makeStyles(theme => ({
   },
   graphDayItem: {
     paddingRight: '16px',
-    minWidth: '80px',
+    minWidth: '110px',
     color: '#202d5d',
     fontSize: '16px'
   },
   graphOtherItem: {
-    paddingLeft: '16px',
-    minWidth: '90px',
+    paddingLeft: '24px',
+    minWidth: '100px',
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -168,7 +168,7 @@ export default function WeeklyForecast(props: ForecastProps) {
     if (tempScale === 'farenheit') {
       temp = temp * (9 / 5) + 32;
     }
-    return Math.floor(temp * 10) / 10 + (tempScale === 'celsius' ? '°C' : '°F');
+    return Math.round(temp) + (tempScale === 'celsius' ? '°C' : '°F');
   };
 
   return (
