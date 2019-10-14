@@ -31,7 +31,6 @@ export interface TodayForecastProps {
 }
 
 export default function TodayForecast(props: TodayForecastProps) {
-  console.log(props.todayData);
   const classes = useStyles({});
 
   return (

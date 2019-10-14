@@ -62,7 +62,8 @@ export default function Dashboard() {
       temp: 26,
       city: 'New York, New York',
       humidity: 28,
-      sunTime: 'Sunset : 20:18'
+      sunTime: 'Sunset : 20:18',
+      weatherId: '01n'
     }
   });
 
@@ -137,7 +138,6 @@ export default function Dashboard() {
         tempGraphArr.data.push(tempObj);
       }
 
-      console.log(tempGraphArr);
       tempForecastArr.weeklyAvg /= 5;
 
       // Sets forecast and graph data objects
@@ -153,6 +153,7 @@ export default function Dashboard() {
       tempObj.data.temp = todayInfo.main.temp;
       tempObj.data.sunTime = moment.unix(todayInfo.sys.sunset).format('h:mm A');
       tempObj.data.humidity = todayInfo.main.humidity;
+      tempObj.data.weatherId = todayInfo.weather[0].icon;
       setTodayData(tempObj);
     }
   }, [todayInfo]);

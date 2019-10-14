@@ -3,10 +3,17 @@ import { string } from 'prop-types';
 export enum ACTIONS {
   UPDATE_DAILY,
   UPDATE_WEEKLY,
+  UPDATE_CITIES,
+  UPDATE_SELECTED_CITY,
   UPDATE_TEMP_SCALE
 }
 
-export type WeatherActions = UpdateWeeklyAction | UpdateDailyAction | UpdateTempScale;
+export type WeatherActions =
+  | UpdateWeeklyAction
+  | UpdateDailyAction
+  | UpdateCitiesAction
+  | UpdateSelectedCityAction
+  | UpdateTempScale;
 
 /* Action Types */
 export type UpdateWeeklyAction = {
@@ -17,6 +24,16 @@ export type UpdateWeeklyAction = {
 export type UpdateDailyAction = {
   type: ACTIONS.UPDATE_DAILY;
   payload: TodayInfo;
+};
+
+export type UpdateCitiesAction = {
+  type: ACTIONS.UPDATE_CITIES;
+  payload: { cityName: string; append: boolean };
+};
+
+export type UpdateSelectedCityAction = {
+  type: ACTIONS.UPDATE_SELECTED_CITY;
+  payload: string;
 };
 
 export type UpdateTempScale = {

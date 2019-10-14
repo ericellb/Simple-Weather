@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import axios from 'axios';
 import CitySearch from '../CitySearch';
-import { useDispatch } from 'react-redux';
-import { fetchWeatherData } from '../../Actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchWeatherData, updateCities, updateSelectedCity } from '../../Actions';
+import { StoreState } from '../../Reducers';
 
 const useStyles = makeStyles(theme => ({
   weatherTitle: {
@@ -22,7 +23,8 @@ const useStyles = makeStyles(theme => ({
   },
   cityItem: {
     padding: '1em',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    cursor: 'pointer'
   },
   cityName: {
     textAlign: 'center'
@@ -53,8 +55,8 @@ const UNPLASH_URL = `https://api.unsplash.com/search/photos?page=1&per_page=1&cl
 export default function CitySelect() {
   const classes = useStyles({});
   const dispatch = useDispatch();
-  const [cities, setCities] = useState(['New York']);
-  const [selectedCity, setSelectedCity] = useState(cities[0]);
+  const citiesList = useSelector((state: StoreState) => state.weather.cities);
+  const selectedCity = useSelector((state: StoreState) => state.weather.selectedCity);
   const [citiesData, setCitiesData] = useState<{ name: string; img: string }[]>();
 
   // On load, get geolocation of current city for default
@@ -63,8 +65,11 @@ export default function CitySelect() {
       navigator.geolocation.getCurrentPosition(pos => {
         let query = pos.coords.latitude + '+' + pos.coords.longitude;
         axios.get(OPEN_CAGE_URL + query).then(res => {
-          console.log(res);
-          setCities([...cities, res.data.results[0].components.town]);
+          if (res.data.results[0].components.city) {
+            dispatch(updateCities(res.data.results[0].components.city, false));
+          } else if (res.data.results[0].components.town) {
+            dispatch(updateCities(res.data.results[0].components.town, false));
+          }
         });
       });
     }
@@ -73,19 +78,24 @@ export default function CitySelect() {
 
   // Watch cities for changes, and do request for city image
   useEffect(() => {
-    if (cities) {
-      cities.forEach(city => {
-        console.log(city);
+    if (citiesList.length > 0) {
+      citiesList.forEach(city => {
         axios.get(UNPLASH_URL + city).then(res => {
           setCitiesData([{ name: city, img: res.data.results[0].urls.thumb }]);
         });
       });
     }
-  }, [cities]);
+  }, [citiesList]);
 
+  // When city is selected fetch weather data for selected city
   useEffect(() => {
     dispatch(fetchWeatherData(selectedCity));
   }, [selectedCity]);
+
+  // Dispatches event to change selected city
+  const changeSelectedCity = (cityName: string) => {
+    dispatch(updateSelectedCity(cityName));
+  };
 
   return (
     <React.Fragment>
@@ -98,7 +108,7 @@ export default function CitySelect() {
         {citiesData &&
           citiesData.map(city => {
             return (
-              <div className={classes.cityItem} key={city.name}>
+              <div className={classes.cityItem} key={city.name} onClick={() => changeSelectedCity(city.name)}>
                 <img className={classes.cityImage} src={city.img} alt={city.name} />
                 <div className={classes.cityName}>{city.name}</div>
               </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState, createRef } from 'react';
 import { makeStyles, IconButton, InputBase, Popper, Paper, List, ListItem } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
-import { fetchWeatherData } from '../../Actions';
+import { fetchWeatherData, updateSelectedCity, updateCities } from '../../Actions';
 /* global google */
 
 const useStyles = makeStyles(theme => ({
@@ -71,7 +71,8 @@ export default function CitySearch() {
 
   // Handles Submit of the search
   const handleSearchSubmit = (cityName: string) => {
-    dispatch(fetchWeatherData(cityName));
+    dispatch(updateCities(cityName, false));
+    dispatch(updateSelectedCity(cityName));
   };
 
   // Handles on change for search, and autocompletion via Google Places
