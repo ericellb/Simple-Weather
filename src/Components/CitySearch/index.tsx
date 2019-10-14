@@ -89,6 +89,7 @@ export default function CitySearch() {
   const handlePredictionSelect = (cityName: string) => {
     setPopperOpen(false);
     setCitySearch(cityName);
+    cityName = cityName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     handleSearchSubmit(cityName);
   };
 
