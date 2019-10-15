@@ -1,8 +1,9 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, useMediaQuery } from '@material-ui/core';
 import TodayInfo, { TodayInfoProps } from './TodayInfo';
 import DataGraph, { GraphProps } from './DataGraph';
 import TodayNav from './TodayNav';
+import CitySearch from '../CitySearch';
 
 const useStyles = makeStyles(theme => ({
   todayContainer: {
@@ -43,12 +44,11 @@ export interface TodayForecastProps {
 
 export default function TodayForecast(props: TodayForecastProps) {
   const classes = useStyles({});
+  const smQuery = useMediaQuery('(max-width:960px)');
 
   return (
     <div className={classes.todayContainer}>
-      <div className={classes.todayNav}>
-        <TodayNav />
-      </div>
+      <div className={classes.todayNav}>{smQuery ? <CitySearch /> : <TodayNav />}</div>
       <div className={classes.todayInfo}>
         <TodayInfo data={props.todayData.data} />
       </div>

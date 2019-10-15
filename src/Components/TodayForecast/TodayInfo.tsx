@@ -73,7 +73,10 @@ const useStyles = makeStyles(theme => ({
     width: 'calc(100% + 64px)',
     height: '100%',
     overflow: 'hidden',
-    opacity: '0.6'
+    opacity: '0.6',
+    [theme.breakpoints.down('sm')]: {
+      width: 'calc(100% + 32px)'
+    }
   },
   leftIcon: {
     color: '#1e1d46 !important',

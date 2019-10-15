@@ -13,10 +13,16 @@ const useStyles = makeStyles(theme => ({
   searchBarContainer: {
     display: 'inline-block',
     background: 'white',
-    borderRadius: '8px'
+    borderRadius: '8px',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    }
   },
   searchBar: {
-    width: '250px'
+    width: '250px',
+    [theme.breakpoints.down('sm')]: {
+      width: 'auto'
+    }
   },
   popperBar: {
     top: '2px',

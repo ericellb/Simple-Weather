@@ -118,11 +118,6 @@ export default function CitySelect() {
     return res;
   });
 
-  // When city is selected fetch weather data for selected city
-  useEffect(() => {
-    dispatch(fetchWeatherData(selectedCity));
-  }, [selectedCity]);
-
   // Dispatches event to change selected city
   const changeSelectedCity = (cityName: string) => {
     dispatch(updateSelectedCity(cityName));

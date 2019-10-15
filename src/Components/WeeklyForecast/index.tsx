@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, Icon } from '@material-ui/core';
+import { makeStyles, Icon, useMediaQuery } from '@material-ui/core';
 import './style.css';
 import { StoreState } from '../../Reducers';
 import { useSelector } from 'react-redux';
@@ -14,34 +14,52 @@ const useStyles = makeStyles(theme => ({
   graphTitle: {
     paddingLeft: '1em',
     boxSizing: 'border-box',
-    display: 'flex'
+    display: 'flex',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center'
+    }
   },
   graphTitleItem: {
     paddingRight: '4em',
     fontSize: '18px',
-    color: '#c8d1de'
+    color: '#c8d1de',
+    [theme.breakpoints.down('sm')]: {
+      paddingRight: '2em'
+    }
   },
   graphItems: {
     flexBasis: '20%',
     display: 'flex',
     alignItems: 'center',
-    position: 'relative'
+    position: 'relative',
+    [theme.breakpoints.down('sm')]: {
+      flexWrap: 'wrap',
+      paddingTop: '2em',
+      paddingBottom: '2em'
+    }
   },
   graphDayItem: {
     paddingRight: '16px',
     minWidth: '110px',
     color: '#202d5d',
-    fontSize: '16px'
+    fontSize: '16px',
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center',
+      minWidth: 'auto'
+    }
   },
   graphOtherItem: {
-    paddingLeft: '24px',
     minWidth: '100px',
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
     fontWeight: 500,
     color: '#3b4671',
-    fontSize: '16px'
+    fontSize: '16px',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center',
+      minWidth: 'auto'
+    }
   },
   graphOtherIcon: {
     width: '100%',
@@ -96,6 +114,16 @@ const useStyles = makeStyles(theme => ({
     right: '50%',
     borderRadius: '8px 0px 0px 8px',
     top: '-5px'
+  },
+  smFlex: {
+    display: 'contents',
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      flexBasis: '100%',
+      paddingBottom: '2em',
+      boxSizing: 'border-box'
+    }
   }
 }));
 
@@ -116,6 +144,7 @@ export default function WeeklyForecast(props: ForecastProps) {
   const classes = useStyles({});
   const tempScale = useSelector((state: StoreState) => state.weather.tempScale);
   const selectedCity = useSelector((state: StoreState) => state.weather.selectedCity);
+  const xsQuery = useMediaQuery('(max-width:600px)');
   // Titles default to rain type
   let graphTitle = 'Weekly Forecast';
 
@@ -180,39 +209,46 @@ export default function WeeklyForecast(props: ForecastProps) {
 
   return (
     <React.Fragment>
-      <div className={classes.graphTitle}>
-        <div className={classes.graphTitleItem}>
-          <div style={{ textAlign: 'center', color: '#202b5c' }}>Week</div>
-          <div style={{ textAlign: 'center', color: '#202b5c', fontSize: '28px' }}>•</div>
+      {!xsQuery && (
+        <div className={classes.graphTitle}>
+          <div className={classes.graphTitleItem}>
+            <div style={{ textAlign: 'center', color: '#202b5c' }}>Week</div>
+            <div style={{ textAlign: 'center', color: '#202b5c', fontSize: '28px' }}>•</div>
+          </div>
+          <div className={classes.graphTitleItem}>Month</div>
+          <div className={classes.graphTitleItem}>3 Month</div>
+          <div className={classes.graphTitleItem}>6 Month</div>
         </div>
-        <div className={classes.graphTitleItem}>Month</div>
-        <div className={classes.graphTitleItem}>3 Month</div>
-        <div className={classes.graphTitleItem}>6 Month</div>
-      </div>
+      )}
       <div className={classes.graphContainer}>
         {props.data.map(item => {
           let barTempLengths = calcHighLowWidth(item.lowTemp, item.highTemp);
           return (
             <div className={classes.graphItems} key={item.day}>
-              <div className={classes.graphDayItem}>{item.day}</div>
-              <div className={classes.graphOtherItem}>
-                <Icon className="fa fa-tint" />
-                {item.precip} mm
-              </div>
-              <div className={classes.graphOtherItem}>
-                <Icon className={`${weatherIdToFAIcon(item.weatherId) + ' ' + classes.graphOtherIcon}`} />
-              </div>
-              <div className={classes.graphOtherItem}>{convertTempScale(item.lowTemp)}</div>
-              <div className={classes.graphBars}>
-                <div className={classes.graphDottedLine}></div>
-                <div className={classes.graphValueContainer}>
-                  <div style={{ height: '100%', width: '100%' }}>
-                    <div className={classes.graphValueLineLow} style={{ width: `${barTempLengths.low}%` }} />
-                    <div className={classes.graphValueLineHigh} style={{ width: `${barTempLengths.high}%` }} />
-                  </div>
+              <div className={classes.smFlex}>
+                <div className={classes.graphDayItem}>{item.day}</div>
+                <div className={classes.graphOtherItem}>
+                  <Icon className="fa fa-tint" />
+                  {item.precip} mm
+                </div>
+                <div className={classes.graphOtherItem}>
+                  <Icon className={`${weatherIdToFAIcon(item.weatherId) + ' ' + classes.graphOtherIcon}`} />
                 </div>
               </div>
-              <div className={classes.graphOtherItem}>{convertTempScale(item.highTemp)}</div>
+
+              <div className={classes.smFlex}>
+                <div className={classes.graphOtherItem}>{convertTempScale(item.lowTemp)}</div>
+                <div className={classes.graphBars}>
+                  <div className={classes.graphDottedLine}></div>
+                  <div className={classes.graphValueContainer}>
+                    <div style={{ height: '100%', width: '100%' }}>
+                      <div className={classes.graphValueLineLow} style={{ width: `${barTempLengths.low}%` }} />
+                      <div className={classes.graphValueLineHigh} style={{ width: `${barTempLengths.high}%` }} />
+                    </div>
+                  </div>
+                </div>
+                <div className={classes.graphOtherItem}>{convertTempScale(item.highTemp)}</div>
+              </div>
             </div>
           );
         })}

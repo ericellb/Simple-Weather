@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, useMediaQuery } from '@material-ui/core';
 import TodayForecast from '../TodayForecast';
 import CitySelect from '../CitySelect';
 import WeeklyForecast, { ForecastProps } from '../WeeklyForecast';
@@ -7,8 +7,9 @@ import './style.css';
 import { GraphProps } from '../TodayForecast/DataGraph';
 import { TodayInfoProps } from '../TodayForecast/TodayInfo';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { StoreState } from '../../Reducers';
+import { fetchWeatherData } from '../../Actions';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -16,7 +17,10 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     height: '100%',
     padding: '1em',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    [theme.breakpoints.down('sm')]: {
+      flexWrap: 'wrap'
+    }
   },
   leftContainer: {
     order: 1,
@@ -25,7 +29,16 @@ const useStyles = makeStyles(theme => ({
     padding: '32px',
     boxSizing: 'border-box',
     backgroundColor: '#f2fbff',
-    borderRadius: '20px 0px 0px 20px'
+    borderRadius: '20px 0px 0px 20px',
+    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      order: 2,
+      flexBasis: '100%',
+      borderRadius: '0px 0px 20px 20px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      padding: '16px'
+    }
   },
   citySelectContainer: {
     height: '50%',
@@ -42,15 +55,31 @@ const useStyles = makeStyles(theme => ({
     padding: '32px',
     boxSizing: 'border-box',
     backgroundColor: '#100e3b',
-    borderRadius: '0px 20px 20px 0px'
+    borderRadius: '0px 20px 20px 0px',
+    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      order: 1,
+      flexBasis: '100%',
+      borderRadius: '20px 20px 0px 0px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      padding: '16px'
+    }
   }
 }));
 
 export default function Dashboard() {
   const classes = useStyles({});
+  const dispatch = useDispatch();
   const forecastInfo = useSelector((state: StoreState) => state.weather.forecastData);
   const todayInfo = useSelector((state: StoreState) => state.weather.todayData);
   const selectedCity = useSelector((state: StoreState) => state.weather.selectedCity);
+  const smQuery = useMediaQuery('(max-width:960px)');
+
+  // When city is selected fetch weather data for selected city
+  useEffect(() => {
+    dispatch(fetchWeatherData(selectedCity));
+  }, [selectedCity]);
 
   // Props for Weekly Forecast
   const [forecastProps, setForecastProps] = useState<ForecastProps>({
@@ -177,9 +206,11 @@ export default function Dashboard() {
   return (
     <div className={classes.mainContainer}>
       <div className={classes.leftContainer}>
-        <div className={classes.citySelectContainer}>
-          <CitySelect />
-        </div>
+        {!smQuery && (
+          <div className={classes.citySelectContainer}>
+            <CitySelect />
+          </div>
+        )}
         <div className={classes.forecastContainer}>
           <WeeklyForecast type={forecastProps.type} data={forecastProps.data} weeklyAvg={forecastProps.weeklyAvg} />
         </div>

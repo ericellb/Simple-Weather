@@ -11,3 +11,17 @@ body {
 #root {
   height: 100%;
 }
+
+@media only screen and (max-width: 960px) {
+  html {
+    font-family: 'Roboto';
+    height: auto;
+  }
+  body {
+    height: auto;
+  }
+
+  #root {
+    height: auto;
+  }
+}

@@ -5,7 +5,10 @@ const useStyles = makeStyles(theme => ({
   graphContainer: {
     display: 'flex',
     height: 'calc(100% - 19px)',
-    fontSize: '12px'
+    fontSize: '12px',
+    [theme.breakpoints.down('sm')]: {
+      minHeight: '200px'
+    }
   },
   graphTitles: {
     display: 'flex',
