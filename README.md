@@ -4,7 +4,7 @@
 
 A Simple Weather Application based on the design by OutCrowd on [Dribble](https://dribbble.com/shots/7177589-Dashboard-Weather-App)
 
-![layout image](layout.png)
+![layout image](layout2.png)
 
 ## License
 
