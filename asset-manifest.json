@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/Simple-Weather/static/css/main.6ddeb495.chunk.css",
-    "main.js": "/Simple-Weather/static/js/main.d99b1edb.chunk.js",
-    "main.js.map": "/Simple-Weather/static/js/main.d99b1edb.chunk.js.map",
+    "main.css": "/Simple-Weather/static/css/main.47061c5e.chunk.css",
+    "main.js": "/Simple-Weather/static/js/main.6af52ac4.chunk.js",
+    "main.js.map": "/Simple-Weather/static/js/main.6af52ac4.chunk.js.map",
     "runtime-main.js": "/Simple-Weather/static/js/runtime-main.567a5c4a.js",
     "runtime-main.js.map": "/Simple-Weather/static/js/runtime-main.567a5c4a.js.map",
-    "static/js/2.3e74bb24.chunk.js": "/Simple-Weather/static/js/2.3e74bb24.chunk.js",
-    "static/js/2.3e74bb24.chunk.js.map": "/Simple-Weather/static/js/2.3e74bb24.chunk.js.map",
+    "static/js/2.e393a982.chunk.js": "/Simple-Weather/static/js/2.e393a982.chunk.js",
+    "static/js/2.e393a982.chunk.js.map": "/Simple-Weather/static/js/2.e393a982.chunk.js.map",
     "index.html": "/Simple-Weather/index.html",
-    "precache-manifest.03e98f4f51f76942f68f471845d74833.js": "/Simple-Weather/precache-manifest.03e98f4f51f76942f68f471845d74833.js",
+    "precache-manifest.b01241158c14bc784d69fde5f4014e54.js": "/Simple-Weather/precache-manifest.b01241158c14bc784d69fde5f4014e54.js",
     "service-worker.js": "/Simple-Weather/service-worker.js",
-    "static/css/main.6ddeb495.chunk.css.map": "/Simple-Weather/static/css/main.6ddeb495.chunk.css.map"
+    "static/css/main.47061c5e.chunk.css.map": "/Simple-Weather/static/css/main.47061c5e.chunk.css.map"
   },
   "entrypoints": [
     "static/js/runtime-main.567a5c4a.js",
-    "static/js/2.3e74bb24.chunk.js",
-    "static/css/main.6ddeb495.chunk.css",
-    "static/js/main.d99b1edb.chunk.js"
+    "static/js/2.e393a982.chunk.js",
+    "static/css/main.47061c5e.chunk.css",
+    "static/js/main.6af52ac4.chunk.js"
   ]
 }
